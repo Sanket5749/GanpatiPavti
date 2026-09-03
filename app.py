@@ -344,15 +344,6 @@ def number_to_marathi_words(n):
 
 
 # -----------------------------
-# Home
-# -----------------------------
-
-@app.route("/")
-def home():
-    return render_template("form.html")
-
-
-# -----------------------------
 # Generate Pavti
 # -----------------------------
 
