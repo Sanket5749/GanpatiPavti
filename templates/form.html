@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>गणपती पावती — स्वराज्य मित्र मंडळ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            background: radial-gradient(ellipse at top, #3a0c07 0%, #0f0a04 60%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+
+        .container {
+            width: min(500px, 100%);
+            background: linear-gradient(135deg, #1e1208, #2a1a0a);
+            border: 1px solid #5a3a10;
+            border-radius: 20px;
+            padding: 40px 36px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #b77a16, #f5d88b, #b77a16);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: #f5d88b;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #a08050;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 16px;
+            background: #0f0a04;
+            border: 1px solid #3a2408;
+            border-radius: 10px;
+            color: #f0e6cc;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #b77a16;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            background: linear-gradient(135deg, #8c1b12, #7d160e);
+            color: #f5d88b;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #a01f14, #8c1b12);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .dashboard-link {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            color: #a08050;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            opacity: 0.75;
+            transition: opacity 0.2s;
+        }
+
+        .dashboard-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>॥ गणपती पावती ॥</h1>
+
+    <form action="/generate" method="POST">
+
+        <label>
+            श्री./श्रीमती. नाव
+        </label>
+
+        <input
+            type="text"
+            name="name"
+            placeholder="उदा. रोहित राजेंद्र पाटील"
+            required
+        >
+
+
+        <label>
+            रक्कम
+        </label>
+
+        <input
+            type="number"
+            name="amount"
+            placeholder="उदा. 201"
+            min="1"
+            required
+        >
+
+
+        <label>
+            दिनांक
+        </label>
+
+        <input
+            type="date"
+            name="date"
+            required
+        >
+
+
+        <button type="submit">
+            गणपती पावती तयार करा
+        </button>
+
+    </form>
+
+    <a href="/dashboard" class="dashboard-link">📊 डॅशबोर्ड पहा (सर्व पावत्या)</a>
+
+</div>
+
+</body>
+
+</html>

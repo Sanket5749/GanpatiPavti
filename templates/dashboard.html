@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पावती डॅशबोर्ड — स्वराज्य मित्र मंडळ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            background: #0f0a04;
+            color: #f0e6cc;
+            min-height: 100vh;
+        }
+
+
+        /* ---- HEADER ---- */
+
+        .header {
+            background: linear-gradient(135deg, #7d160e 0%, #4a0c07 100%);
+            padding: 28px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #b77a16;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+        }
+
+        .header-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #f5d88b;
+        }
+
+        .header-sub {
+            font-size: 14px;
+            color: #e0c89a;
+            margin-top: 4px;
+        }
+
+        .back-btn {
+            background: #f5d88b;
+            color: #7d160e;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #ffe9a0;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: #a08050;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid #3a2408;
+            transition: all 0.2s;
+            margin-left: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #1e1208;
+            color: #f5d88b;
+        }
+
+
+        /* ---- STATS ---- */
+
+        .stats {
+            display: flex;
+            gap: 24px;
+            padding: 36px 40px 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #1e1208 0%, #2a1a0a 100%);
+            border: 1px solid #5a3a10;
+            border-radius: 16px;
+            padding: 28px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b77a16, #f5d88b, #b77a16);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #a08050;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 900;
+            color: #f5d88b;
+            margin-top: 8px;
+            line-height: 1;
+        }
+
+        .stat-value.rupees::before {
+            content: '₹ ';
+            font-size: 26px;
+            color: #c9923a;
+        }
+
+        .stat-icon {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 52px;
+            opacity: 0.15;
+        }
+
+
+        /* ---- TABLE SECTION ---- */
+
+        .section {
+            padding: 10px 40px 60px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f5d88b;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3a2408;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid #3a2408;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #7d160e, #5a0f09);
+        }
+
+        thead th {
+            padding: 16px 20px;
+            text-align: left;
+            color: #f5d88b;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #2a1a08;
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #1e1208;
+        }
+
+        tbody td {
+            padding: 15px 20px;
+            color: #e8d8b0;
+            vertical-align: middle;
+        }
+
+        .receipt-no {
+            font-family: monospace;
+            font-size: 12px;
+            color: #a08050;
+        }
+
+        .donor-name {
+            font-weight: 600;
+            color: #f0e6cc;
+        }
+
+        .amount-cell {
+            font-weight: 700;
+            color: #f5d88b;
+            white-space: nowrap;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            color: #c9923a;
+        }
+
+        .serial {
+            color: #6a4a20;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .del-btn {
+            background: none;
+            border: 1px solid #5a1a10;
+            color: #c0504a;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .del-btn:hover {
+            background: #8c1b12;
+            color: #fff;
+            border-color: #8c1b12;
+        }
+
+
+        /* ---- EMPTY STATE ---- */
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #6a4a20;
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 18px;
+        }
+
+
+        /* ---- FOOTER ---- */
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5a3a10;
+            font-size: 13px;
+            border-top: 1px solid #2a1a08;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+            <div class="header-title">🪷 पावती डॅशबोर्ड</div>
+            <div class="header-sub">स्वराज्य मित्र मंडळ, बाभुळदे — गणपती उत्सव</div>
+        </div>
+
+        <a href="/" class="back-btn">← नवीन पावती</a>
+
+        <div style="display:flex; align-items:center;">
+
+            <a href="/logout" class="logout-btn">🔓 Logout</a>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-label">एकूण पावत्या</div>
+            <div class="stat-value">{{ total_count }}</div>
+            <div class="stat-icon">🧾</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">एकूण रक्कम</div>
+            <div class="stat-value rupees">{{ "{:,}".format(total_amount) }}</div>
+            <div class="stat-icon">💰</div>
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="section">
+
+        <div class="section-title">देणगीदारांची यादी</div>
+
+        {% if receipts %}
+
+        <div class="table-wrap">
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>पावती क्र.</th>
+                        <th>नाव</th>
+                        <th>रक्कम (₹)</th>
+                        <th>दिनांक</th>
+                        <th>नोंद वेळ</th>
+                        <th>हटवा</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in receipts %}
+                    <tr>
+                        <td class="serial">{{ loop.revindex }}</td>
+                        <td class="receipt-no">{{ r.receipt_no }}</td>
+                        <td class="donor-name">{{ r.name }}</td>
+                        <td class="amount-cell">₹ {{ "{:,}".format(r.amount) }}</td>
+                        <td class="date-cell">{{ r.date }}</td>
+                        <td class="date-cell">{{ r.created_at }}</td>
+                        <td>
+                            <form method="POST" action="/delete/{{ r.id }}" onsubmit="return confirm('{{ r.name }} ची पावती हटवायची आहे का?')">
+                                <button type="submit" class="del-btn">🗑️ हटवा</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <span class="icon">🪷</span>
+            <p>अजून कोणतीही पावती तयार झाली नाही.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="footer">
+        स्वराज्य मित्र मंडळ, बाभुळदे &nbsp;|&nbsp; गणपती बाप्पा मोरया! 🙏
+    </div>
+
+
+</body>
+
+</html>

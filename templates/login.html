@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — स्वराज्य मित्र मंडळ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            background: radial-gradient(ellipse at top, #3a0c07 0%, #0f0a04 60%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #1e1208, #2a1a0a);
+            border: 1px solid #5a3a10;
+            border-radius: 20px;
+            padding: 48px 44px;
+            width: 420px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #b77a16, #f5d88b, #b77a16);
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-area .icon {
+            font-size: 52px;
+            display: block;
+        }
+
+        .logo-area h1 {
+            font-size: 22px;
+            font-weight: 900;
+            color: #f5d88b;
+            margin-top: 10px;
+        }
+
+        .logo-area p {
+            font-size: 13px;
+            color: #a08050;
+            margin-top: 4px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #a08050;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 16px;
+            background: #0f0a04;
+            border: 1px solid #3a2408;
+            border-radius: 10px;
+            color: #f0e6cc;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #b77a16;
+        }
+
+        .error {
+            background: rgba(141, 27, 18, 0.3);
+            border: 1px solid #8c1b12;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #f5a88b;
+            font-size: 14px;
+            margin-top: 18px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 28px;
+            padding: 15px;
+            background: linear-gradient(135deg, #8c1b12, #7d160e);
+            color: #f5d88b;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #a01f14, #8c1b12);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="logo-area">
+        <span class="icon">🪷</span>
+        <h1>स्वराज्य मित्र मंडळ</h1>
+        <p>गणपती उत्सव — पावती प्रणाली</p>
+    </div>
+
+    {% if error %}
+    <div class="error">❌ {{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/login">
+
+        <label>Username</label>
+        <input
+            type="text"
+            name="username"
+            placeholder="admin"
+            required
+            autocomplete="username"
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            autocomplete="current-password"
+        >
+
+        <button type="submit">🔓 Login करा</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
