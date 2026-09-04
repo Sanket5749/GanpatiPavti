@@ -162,7 +162,12 @@ def generate():
 
     name   = request.form.get("name", "").strip()
     amount = request.form.get("amount", "").strip()
-    date   = request.form.get("date", "").strip()
+    date_raw = request.form.get("date", "").strip()
+    # Convert from HTML date format (YYYY-MM-DD) to DD-MM-YYYY
+    try:
+        date = datetime.strptime(date_raw, "%Y-%m-%d").strftime("%d-%m-%Y")
+    except ValueError:
+        date = date_raw  # fallback: use as-is if parsing fails
 
     if not name or not amount:
         return "Name and amount are required.", 400
@@ -180,7 +185,7 @@ def generate():
 
     receipt_no   = str(next_no)
     amount_words = number_to_marathi_words(amount)
-    created_at   = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    created_at   = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
     # Save to SQLite
     with get_db() as conn:
