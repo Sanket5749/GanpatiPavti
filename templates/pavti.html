@@ -679,10 +679,11 @@
 
             // Mobile: use native share sheet (shares image directly to WhatsApp)
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              const yadiUrl = window.location.origin + "/yadi";
               await navigator.share({
                 files: [file],
                 title: "गणपती पावती",
-                text: "🪷 गणपती पावती — स्वराज्य मित्र मंडळ, बाभुळदे",
+                text: `🪷 गणपती पावती — स्वराज्य मित्र मंडळ, बाभुळदे\n\n📋 देणगीदारांची यादी पहा: ${yadiUrl}`,
               });
 
               waBtn.textContent = "✅ शेअर केले!";
@@ -693,8 +694,9 @@
               link.href = canvas.toDataURL("image/png");
               link.click();
 
+              const yadiUrl = window.location.origin + "/yadi";
               const text = encodeURIComponent(
-                "🪷 गणपती पावती — स्वराज्य मित्र मंडळ, बाभुळदे\n(पावती आत्ताच डाउनलोड झाली, ती WhatsApp मध्ये जोडा)",
+                `🪷 गणपती पावती — स्वराज्य मित्र मंडळ, बाभुळदे\n(पावती आत्ताच डाउनलोड झाली, ती WhatsApp मध्ये जोडा)\n\n📋 देणगीदारांची यादी पहा: ${yadiUrl}`,
               );
               setTimeout(() => {
                 window.open(

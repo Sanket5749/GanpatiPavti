@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>देणगीदारांची यादी — स्वराज्य मित्र मंडळ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            background: #0f0a04;
+            color: #f0e6cc;
+            min-height: 100vh;
+        }
+
+
+        /* ---- HEADER ---- */
+
+        .header {
+            background: linear-gradient(135deg, #7d160e 0%, #4a0c07 100%);
+            padding: 32px 40px;
+            text-align: center;
+            border-bottom: 3px solid #b77a16;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #f5d88b;
+            letter-spacing: 1px;
+        }
+
+        .header-sub {
+            font-size: 15px;
+            color: #e0c89a;
+            margin-top: 6px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            margin-top: 12px;
+            background: rgba(183, 122, 22, 0.2);
+            border: 1px solid #b77a16;
+            color: #f5d88b;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* ---- STATS ---- */
+
+        .stats {
+            display: flex;
+            gap: 24px;
+            padding: 36px 40px 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+            background: linear-gradient(135deg, #1e1208 0%, #2a1a0a 100%);
+            border: 1px solid #5a3a10;
+            border-radius: 16px;
+            padding: 28px 32px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b77a16, #f5d88b, #b77a16);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #a08050;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 900;
+            color: #f5d88b;
+            margin-top: 8px;
+            line-height: 1;
+        }
+
+        .stat-value.rupees::before {
+            content: '₹ ';
+            font-size: 26px;
+            color: #c9923a;
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            margin-top: 8px;
+            opacity: 0.6;
+        }
+
+
+        /* ---- TABLE SECTION ---- */
+
+        .section {
+            padding: 10px 40px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f5d88b;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3a2408;
+            text-align: center;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid #3a2408;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #7d160e, #5a0f09);
+        }
+
+        thead th {
+            padding: 16px 20px;
+            text-align: left;
+            color: #f5d88b;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #2a1a08;
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(30, 18, 8, 0.4);
+        }
+
+        tbody tr:hover {
+            background: #1e1208;
+        }
+
+        tbody td {
+            padding: 14px 20px;
+            color: #e8d8b0;
+            vertical-align: middle;
+        }
+
+        .serial {
+            color: #a08050;
+            font-weight: 700;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .donor-name {
+            font-weight: 600;
+            color: #f0e6cc;
+        }
+
+        .amount-cell {
+            font-weight: 700;
+            color: #f5d88b;
+            white-space: nowrap;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            color: #c9923a;
+            font-size: 13px;
+        }
+
+
+        /* ---- EMPTY STATE ---- */
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #6a4a20;
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 18px;
+        }
+
+
+        /* ---- FOOTER ---- */
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5a3a10;
+            font-size: 13px;
+            border-top: 1px solid #2a1a08;
+        }
+
+
+        /* ---- PRINT ---- */
+
+        @media print {
+            body { background: #fff; color: #000; }
+            .header { background: none; border-bottom: 2px solid #000; color: #000; }
+            .header-title, .header-sub, .header-badge { color: #000; }
+            .stat-card { border: 1px solid #ccc; background: #f9f9f9; }
+            .stat-label, .stat-value { color: #000; }
+            .stat-value.rupees::before { color: #000; }
+            thead { background: #333; }
+            thead th { color: #fff; }
+            tbody td { color: #000; }
+            .donor-name, .amount-cell { color: #000; }
+            .footer { color: #555; border-top: 1px solid #ccc; }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+        <div class="header-title">🪷 देणगीदारांची यादी</div>
+        <div class="header-sub">स्वराज्य मित्र मंडळ, बाभुळदे — गणपती उत्सव</div>
+        <div class="header-badge">गणपती बाप्पा मोरया 🙏</div>
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-label">एकूण देणगीदार</div>
+            <div class="stat-value">{{ total_count }}</div>
+            <div class="stat-icon">🧾</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">एकूण रक्कम</div>
+            <div class="stat-value rupees">{{ "{:,}".format(total_amount) }}</div>
+            <div class="stat-icon">💰</div>
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="section">
+
+        <div class="section-title">देणगीदारांची संपूर्ण यादी</div>
+
+        {% if receipts %}
+
+        <div class="table-wrap">
+            <table>
+
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">#</th>
+                        <th>नाव</th>
+                        <th>रक्कम (₹)</th>
+                        <th>दिनांक</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for r in receipts %}
+                    <tr>
+                        <td class="serial">{{ loop.index }}</td>
+                        <td class="donor-name">{{ r.name }}</td>
+                        <td class="amount-cell">₹ {{ "{:,}".format(r.amount) }}</td>
+                        <td class="date-cell">{{ r.date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <span class="icon">🪷</span>
+            <p>अजून कोणतीही देणगी नोंदवली नाही.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="footer">
+        स्वराज्य मित्र मंडळ, बाभुळदे &nbsp;|&nbsp; गणपती बाप्पा मोरया! 🙏
+    </div>
+
+
+</body>
+
+</html>

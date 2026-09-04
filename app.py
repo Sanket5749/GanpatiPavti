@@ -224,5 +224,25 @@ def delete_one(receipt_id):
     return redirect(url_for("dashboard"))
 
 
+# -----------------------------
+# Yadi (Public donor list)
+# -----------------------------
+
+@app.route("/yadi")
+def yadi():
+    result = supabase.table("receipts").select("*").order("id", desc=False).execute()
+    receipts = result.data or []
+
+    total_amount = sum(r["amount"] for r in receipts)
+    total_count  = len(receipts)
+
+    return render_template(
+        "yadi.html",
+        receipts=receipts,
+        total_amount=total_amount,
+        total_count=total_count
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)
