@@ -230,7 +230,7 @@ def delete_one(receipt_id):
 
 @app.route("/yadi")
 def yadi():
-    result = supabase.table("receipts").select("*").order("id", desc=False).execute()
+    result = supabase.table("receipts").select("*").order("amount", desc=False).order("id", desc=False).execute()
     receipts = result.data or []
 
     total_amount = sum(r["amount"] for r in receipts)
