@@ -247,6 +247,7 @@ def kharch():
     if request.method == "POST":
         title = request.form.get("title", "").strip()
         amount_raw = request.form.get("amount", "").strip()
+        date_raw = request.form.get("date", "").strip()
 
         if not title or not amount_raw:
             return "Title and amount are required.", 400
@@ -256,7 +257,15 @@ def kharch():
         except ValueError:
             return "Invalid amount.", 400
 
-        date = datetime.now().strftime("%d-%m-%Y")
+        # Convert from HTML date format (YYYY-MM-DD) to DD-MM-YYYY
+        if date_raw:
+            try:
+                date = datetime.strptime(date_raw, "%Y-%m-%d").strftime("%d-%m-%Y")
+            except ValueError:
+                date = date_raw  # fallback if parsing fails
+        else:
+            date = datetime.now().strftime("%d-%m-%Y")
+
         created_at = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
         try:
@@ -284,6 +293,7 @@ def kharch():
 
     total_kharch = sum(k["amount"] for k in kharch_items)
     total_count = len(kharch_items)
+    today_date = datetime.now().strftime("%Y-%m-%d")
 
     return render_template(
         "kharch.html",
@@ -291,7 +301,8 @@ def kharch():
         total_kharch=total_kharch,
         total_count=total_count,
         total_jama=0,
-        table_exists=table_exists
+        table_exists=table_exists,
+        today_date=today_date
     )
 
 

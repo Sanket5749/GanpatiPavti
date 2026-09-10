@@ -225,6 +225,15 @@
             box-shadow: 0 0 0 2px rgba(183, 122, 22, 0.2);
         }
 
+        .form-input[type="date"] {
+            color-scheme: dark;
+        }
+
+        .form-input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(0.8) sepia(100%) saturate(300%) hue-rotate(5deg);
+        }
+
         .submit-btn {
             width: 100%;
             padding: 14px;
@@ -464,14 +473,14 @@
     <header class="header">
         <div>
             <div class="header-title">💸 गणपती उत्सव — खर्च नोंद</div>
-            <div class="header-sub">स्वराज्य मित्र मंडळ, बाभुळदे (Admin Panel)</div>
+            <div class="header-sub">स्वराज्य मित्र मंडळ, बाभुळदे</div>
         </div>
 
         <nav class="nav-links">
             <a href="/" class="nav-btn">✍️ नवीन पावती</a>
             <a href="/dashboard" class="nav-btn-secondary">📊 पावती डॅशबोर्ड</a>
             <a href="/yadi" class="nav-btn-secondary">📜 देणगी यादी</a>
-            <a href="/logout" class="logout-btn">🔓 Logout</a>
+            <a href="/logout" class="logout-btn">Logout</a>
         </nav>
     </header>
 
@@ -486,9 +495,9 @@
         <!-- TOP GRID: FORM + STATS -->
         <div class="top-grid">
 
-            <!-- 2-INPUT EXPENSE FORM -->
+            <!-- 3-INPUT EXPENSE FORM -->
             <div class="form-card">
-                <div class="form-title">➕ नवीन खर्च नोंदवा</div>
+                <div class="form-title">नवीन खर्च नोंदवा</div>
                 <div class="form-sub">उत्सवासाठी झालेला खर्च खाली नोंदवा</div>
 
                 <form method="POST" action="/kharch">
@@ -514,6 +523,18 @@
                             class="form-input"
                             placeholder="उदा. 2500"
                             min="1"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="date">३. दिनांक *</label>
+                        <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            class="form-input"
+                            value="{{ today_date }}"
                             required
                         >
                     </div>
@@ -596,6 +617,17 @@
         स्वराज्य मित्र मंडळ, बाभुळदे &nbsp;|&nbsp; गणपती बाप्पा मोरया! 🙏
     </footer>
 
+    <script>
+        // Ensure date input has today's date if not already set
+        const dateInput = document.getElementById('date');
+        if (dateInput && !dateInput.value) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+    </script>
 </body>
 
 </html>
