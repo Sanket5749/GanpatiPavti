@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>खर्च नोंद व व्यवस्थापन — स्वराज्य मित्र मंडळ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+            background: #0f0a04;
+            color: #f0e6cc;
+            min-height: 100vh;
+        }
+
+        /* ---- HEADER ---- */
+        .header {
+            background: linear-gradient(135deg, #7d160e 0%, #4a0c07 100%);
+            padding: 24px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #b77a16;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #f5d88b;
+        }
+
+        .header-sub {
+            font-size: 13px;
+            color: #e0c89a;
+            margin-top: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #f5d88b;
+            color: #7d160e;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            background: #ffe9a0;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn-secondary {
+            background: rgba(183, 122, 22, 0.2);
+            color: #f5d88b;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid #b77a16;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn-secondary:hover {
+            background: rgba(183, 122, 22, 0.4);
+            color: #fff;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: #a08050;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid #3a2408;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #1e1208;
+            color: #f5d88b;
+        }
+
+        /* ---- MAIN CONTAINER ---- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 24px 60px;
+        }
+
+        /* ---- ALERT BANNER ---- */
+        .table-alert {
+            background: rgba(140, 27, 18, 0.25);
+            border: 1px solid #b77a16;
+            border-left: 4px solid #f5d88b;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            color: #f0e6cc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .table-alert strong {
+            color: #f5d88b;
+        }
+
+        .table-alert code {
+            background: #0f0a04;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #f5d88b;
+            font-size: 13px;
+        }
+
+        /* ---- GRID LAYOUT (FORM + STATS) ---- */
+        .top-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .top-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- EXPENSE FORM CARD ---- */
+        .form-card {
+            background: linear-gradient(135deg, #1e1208 0%, #2a1a0a 100%);
+            border: 1px solid #5a3a10;
+            border-radius: 16px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            height: fit-content;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b77a16, #f5d88b, #b77a16);
+        }
+
+        .form-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: #f5d88b;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-sub {
+            font-size: 12px;
+            color: #a08050;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #a08050;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 13px 16px;
+            background: #0f0a04;
+            border: 1px solid #3a2408;
+            border-radius: 10px;
+            color: #f0e6cc;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #b77a16;
+            box-shadow: 0 0 0 2px rgba(183, 122, 22, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8c1b12, #6b140d);
+            color: #f5d88b;
+            border: 1px solid #b77a16;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #a01f14, #7d160e);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(140, 27, 18, 0.4);
+        }
+
+        /* ---- STATS GRID ---- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e1208 0%, #2a1a0a 100%);
+            border: 1px solid #5a3a10;
+            border-radius: 14px;
+            padding: 22px 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b77a16, #f5d88b, #b77a16);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #a08050;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #f5d88b;
+            margin-top: 6px;
+            line-height: 1.1;
+        }
+
+        .stat-value.rupees::before {
+            content: '₹ ';
+            font-size: 20px;
+            color: #c9923a;
+        }
+
+        .stat-value.positive {
+            color: #6ee7b7;
+        }
+
+        .stat-value.negative {
+            color: #f87171;
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: #8c734b;
+            margin-top: 6px;
+        }
+
+        /* ---- TABLE SECTION ---- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3a2408;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #f5d88b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid #3a2408;
+            background: #140d05;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #7d160e, #5a0f09);
+        }
+
+        thead th {
+            padding: 14px 18px;
+            text-align: left;
+            color: #f5d88b;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #2a1a08;
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #1e1208;
+        }
+
+        tbody td {
+            padding: 14px 18px;
+            color: #e8d8b0;
+            vertical-align: middle;
+        }
+
+        .serial {
+            color: #6a4a20;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .title-cell {
+            font-weight: 600;
+            color: #f0e6cc;
+            font-size: 15px;
+        }
+
+        .amount-cell {
+            font-weight: 700;
+            color: #f5d88b;
+            white-space: nowrap;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            color: #c9923a;
+            font-size: 13px;
+        }
+
+        .del-btn {
+            background: none;
+            border: 1px solid #5a1a10;
+            color: #c0504a;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .del-btn:hover {
+            background: #8c1b12;
+            color: #fff;
+            border-color: #8c1b12;
+        }
+
+        /* ---- EMPTY STATE ---- */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8c734b;
+            background: #140d05;
+            border-radius: 14px;
+            border: 1px solid #3a2408;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: #e0c89a;
+        }
+
+        /* ---- FOOTER ---- */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #5a3a10;
+            font-size: 13px;
+            border-top: 1px solid #2a1a08;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div>
+            <div class="header-title">💸 गणपती उत्सव — खर्च नोंद</div>
+            <div class="header-sub">स्वराज्य मित्र मंडळ, बाभुळदे (Admin Panel)</div>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-btn">✍️ नवीन पावती</a>
+            <a href="/dashboard" class="nav-btn-secondary">📊 पावती डॅशबोर्ड</a>
+            <a href="/yadi" class="nav-btn-secondary">📜 देणगी यादी</a>
+            <a href="/logout" class="logout-btn">🔓 Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        {% if not table_exists %}
+        <div class="table-alert">
+            ⚠️ <strong>महत्त्वाची सूचना (Supabase):</strong> <code>kharch</code> टेबल अद्याप Supabase डेटाबेसमध्ये तयार झालेले नाही. कृपया तुमच्या Supabase प्रोजेक्टमधील SQL Editor मध्ये जाऊन <code>schema_kharch.sql</code> मधील SQL चालवा जेणेकरून खर्चाची नोंद जतन करता येईल.
+        </div>
+        {% endif %}
+
+        <!-- TOP GRID: FORM + STATS -->
+        <div class="top-grid">
+
+            <!-- 2-INPUT EXPENSE FORM -->
+            <div class="form-card">
+                <div class="form-title">➕ नवीन खर्च नोंदवा</div>
+                <div class="form-sub">उत्सवासाठी झालेला खर्च खाली नोंदवा</div>
+
+                <form method="POST" action="/kharch">
+                    <div class="form-group">
+                        <label class="form-label" for="title">१. खर्चाचा तपशील / कुठे खर्च केला *</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            class="form-input"
+                            placeholder="उदा. मंडप डेकोरेशन, प्रसाद, फुले..."
+                            required
+                            autofocus
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="amount">२. रक्कम (₹) *</label>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            class="form-input"
+                            placeholder="उदा. 2500"
+                            min="1"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        💾 खर्च नोंदवा
+                    </button>
+                </form>
+            </div>
+
+            <!-- STATS CARDS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">एकूण खर्च</div>
+                    <div class="stat-value rupees">{{ "{:,}".format(total_kharch) }}</div>
+                    <div class="stat-sub">{{ total_count }} एकूण खर्चाच्या नोंदी</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">एकूण देणगी जमा</div>
+                    <div class="stat-value rupees">{{ "{:,}".format(total_jama) }}</div>
+                    <div class="stat-sub">पावत्यांद्वारे जमा झालेली रक्कम</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">नोंदी संख्या</div>
+                    <div class="stat-value">{{ total_count }}</div>
+                    <div class="stat-sub">एकूण नोंदवलेले खर्च घटक</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EXPENSES TABLE SECTION -->
+        <div>
+            <div class="section-header">
+                <div class="section-title">
+                    📋 खर्चाची संपूर्ण यादी ({{ total_count }})
+                </div>
+            </div>
+
+            {% if kharch_items %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>खर्चाचा तपशील</th>
+                            <th>रक्कम (₹)</th>
+                            <th>दिनांक</th>
+                            <th>नोंद वेळ</th>
+                            <th style="text-align: right;">हटवा</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in kharch_items %}
+                        <tr>
+                            <td class="serial">{{ loop.revindex }}</td>
+                            <td class="title-cell">{{ item.title }}</td>
+                            <td class="amount-cell">₹ {{ "{:,}".format(item.amount) }}</td>
+                            <td class="date-cell">{{ item.date }}</td>
+                            <td class="date-cell">{{ item.created_at }}</td>
+                            <td style="text-align: right;">
+                                <form method="POST" action="/delete-kharch/{{ item.id }}" onsubmit="return confirm('\'{{ item.title }}\' (₹{{ item.amount }}) हा खर्च हटवायचा आहे का?')">
+                                    <button type="submit" class="del-btn">🗑️ हटवा</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <span class="icon">💸</span>
+                <p>अद्याप कोणत्याही खर्चाची नोंद झालेली नाही.</p>
+                <div style="font-size: 13px; color: #8c734b; margin-top: 6px;">
+                    वरील फॉर्म भरून नवीन खर्चाची नोंद करा.
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        स्वराज्य मित्र मंडळ, बाभुळदे &nbsp;|&nbsp; गणपती बाप्पा मोरया! 🙏
+    </footer>
+
+</body>
+
+</html>

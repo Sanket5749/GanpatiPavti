@@ -65,6 +65,34 @@
             background: #ffe9a0;
         }
 
+        .nav-btn-secondary {
+            background: rgba(183, 122, 22, 0.2);
+            color: #f5d88b;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid #b77a16;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn-secondary:hover {
+            background: rgba(183, 122, 22, 0.4);
+            color: #fff;
+        }
+
+        .stat-value.positive {
+            color: #6ee7b7;
+        }
+
+        .stat-value.negative {
+            color: #f87171;
+        }
+
         .logout-btn {
             background: transparent;
             color: #a08050;
@@ -75,7 +103,7 @@
             font-size: 14px;
             border: 1px solid #3a2408;
             transition: all 0.2s;
-            margin-left: 10px;
+            margin-left: 6px;
         }
 
         .logout-btn:hover {
@@ -297,12 +325,11 @@
             <div class="header-sub">स्वराज्य मित्र मंडळ, बाभुळदे — गणपती उत्सव</div>
         </div>
 
-        <a href="/" class="back-btn">← नवीन पावती</a>
-
-        <div style="display:flex; align-items:center;">
-
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <a href="/" class="back-btn">✍️ नवीन पावती</a>
+            <a href="/kharch" class="nav-btn-secondary">💸 खर्च नोंद</a>
+            <a href="/yadi" class="nav-btn-secondary">📜 देणगी यादी</a>
             <a href="/logout" class="logout-btn">🔓 Logout</a>
-
         </div>
 
     </div>
@@ -319,11 +346,16 @@
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">एकूण रक्कम</div>
+            <div class="stat-label">एकूण जमा रक्कम</div>
             <div class="stat-value rupees">{{ "{:,}".format(total_amount) }}</div>
             <div class="stat-icon">💰</div>
         </div>
 
+        <div class="stat-card">
+            <div class="stat-label">एकूण खर्च</div>
+            <div class="stat-value rupees">{{ "{:,}".format(total_kharch) }}</div>
+            <div class="stat-icon">💸</div>
+        </div>
     </div>
 
 

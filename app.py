@@ -202,11 +202,22 @@ def dashboard():
     total_amount = sum(r["amount"] for r in receipts)
     total_count  = len(receipts)
 
+    # Kharch summary for dashboard
+    total_kharch = 0
+    try:
+        k_res = supabase.table("kharch").select("amount").execute()
+        if k_res.data:
+            total_kharch = sum(k["amount"] for k in k_res.data)
+    except Exception:
+        pass
+
+
     return render_template(
         "dashboard.html",
         receipts=receipts,
         total_amount=total_amount,
-        total_count=total_count
+        total_count=total_count,
+        total_kharch=total_kharch
     )
 
 
@@ -222,6 +233,80 @@ def delete_one(receipt_id):
     supabase.table("receipts").delete().eq("id", receipt_id).execute()
 
     return redirect(url_for("dashboard"))
+
+
+# -----------------------------
+# Kharch (Admin Expense Management)
+# -----------------------------
+
+@app.route("/kharch", methods=["GET", "POST"])
+def kharch():
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        amount_raw = request.form.get("amount", "").strip()
+
+        if not title or not amount_raw:
+            return "Title and amount are required.", 400
+
+        try:
+            amount = int(amount_raw)
+        except ValueError:
+            return "Invalid amount.", 400
+
+        date = datetime.now().strftime("%d-%m-%Y")
+        created_at = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+
+        try:
+            supabase.table("kharch").insert({
+                "title": title,
+                "amount": amount,
+                "date": date,
+                "created_at": created_at,
+            }).execute()
+        except Exception as e:
+            print(f"Error inserting into kharch: {e}")
+            return f"Error saving expense. Make sure the 'kharch' table exists in Supabase. Details: {e}", 500
+
+        return redirect(url_for("kharch"))
+
+    # GET request
+    kharch_items = []
+    table_exists = True
+    try:
+        kharch_res = supabase.table("kharch").select("*").order("id", desc=True).execute()
+        kharch_items = kharch_res.data or []
+    except Exception as e:
+        print(f"Error fetching kharch: {e}")
+        table_exists = False
+
+    total_kharch = sum(k["amount"] for k in kharch_items)
+    total_count = len(kharch_items)
+
+    return render_template(
+        "kharch.html",
+        kharch_items=kharch_items,
+        total_kharch=total_kharch,
+        total_count=total_count,
+        total_jama=0,
+        table_exists=table_exists
+    )
+
+
+# -----------------------------
+# Delete Kharch (Admin)
+# -----------------------------
+
+@app.route("/delete-kharch/<int:kharch_id>", methods=["POST"])
+def delete_kharch(kharch_id):
+    if not is_logged_in():
+        return redirect(url_for("login"))
+
+    supabase.table("kharch").delete().eq("id", kharch_id).execute()
+
+    return redirect(url_for("kharch"))
 
 
 # -----------------------------
