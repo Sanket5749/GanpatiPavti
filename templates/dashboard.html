@@ -367,7 +367,6 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>पावती क्र.</th>
                         <th>नाव</th>
                         <th>रक्कम (₹)</th>
                         <th>दिनांक</th>
@@ -380,14 +379,13 @@
                     {% for r in receipts %}
                     <tr>
                         <td class="serial">{{ loop.revindex }}</td>
-                        <td class="receipt-no">{{ r.receipt_no }}</td>
                         <td class="donor-name">{{ r.name }}</td>
                         <td class="amount-cell">₹ {{ "{:,}".format(r.amount) }}</td>
                         <td class="date-cell">{{ r.date }}</td>
                         <td class="date-cell">{{ r.created_at }}</td>
                         <td>
                             <form method="POST" action="/delete/{{ r.id }}" onsubmit="return confirm('{{ r.name }} ची पावती हटवायची आहे का?')">
-                                <button type="submit" class="del-btn">🗑️ हटवा</button>
+                                <button type="submit" class="del-btn">हटवा</button>
                             </form>
                         </td>
                     </tr>
